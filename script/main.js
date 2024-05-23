@@ -25,6 +25,11 @@ window.addEventListener('resize', () => {
 let state, scoreBar, value = 0, score, target, gameScene,
     id, bg, timer = 10, targetClick = true;
 
+// Load saved score
+if (localStorage.getItem('score')) {
+    value = parseInt(localStorage.getItem('score'));
+}
+
 loader
     .add("images/atlas.json")
     .load(setup);
@@ -54,7 +59,7 @@ function setup() {
         fill: "white",
     });
 
-    score = new Text("0", style);
+    score = new Text(value.toString(), style);
     score.x = -score.width / 2;
     score.y = -score.height / 2 - 1;
     scoreBar.addChild(score);
@@ -89,6 +94,7 @@ function handlerClick() {
     if (targetClick) {
         value++;
         score.text = value;
+
         score.x = -score.width / 2;
         score.y = -score.height / 2;
 
@@ -96,7 +102,11 @@ function handlerClick() {
         target.scale.y = 0.95;
 
         targetClick = false;
+
         timer = 10;
+
+        // Save the score
+        localStorage.setItem('score', value);
     }
 }
 
